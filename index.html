@@ -1,0 +1,1238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iOS Store - Snapchat Premium</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #FFFC00;
+            --secondary-color: #000000;
+            --accent-color: #F5F5F1;
+            --background-color: #0F172A;
+            --text-color: #F5F5F7;
+            --card-color: #1E293B;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            --gradient: linear-gradient(135deg, #FFFC00, #FFD700, #FFA500);
+            --gradient-light: linear-gradient(135deg, rgba(255, 252, 0, 0.1), rgba(255, 215, 0, 0.1), rgba(255, 165, 0, 0.1));
+        }
+
+        .light-mode {
+            --primary-color: #FFFC00;
+            --secondary-color: #000000;
+            --accent-color: #221F1F;
+            --background-color: #F5F5F7;
+            --text-color: #1D1D1F;
+            --card-color: #FFFFFF;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            --gradient: linear-gradient(135deg, #FFFC00, #FFD700, #FFA500);
+            --gradient-light: linear-gradient(135deg, rgba(255, 252, 0, 0.1), rgba(255, 215, 0, 0.1), rgba(255, 165, 0, 0.1));
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'SF Pro Display', 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background-color: var(--background-color);
+            color: var(--text-color);
+            transition: var(--transition);
+            line-height: 1.6;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        header {
+            background-color: rgba(30, 30, 30, 0.8);
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--gradient);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: black;
+            font-weight: bold;
+            font-size: 22px;
+            box-shadow: 0 4px 15px rgba(255, 252, 0, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .logo-icon::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+            transform: rotate(45deg);
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            0% { transform: translateX(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) rotate(45deg); }
+        }
+
+        .logo-text {
+            font-size: 28px;
+            font-weight: 800;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .social-icon {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background-color: var(--card-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-color);
+            text-decoration: none;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .social-icon::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--gradient);
+            opacity: 0;
+            transition: var(--transition);
+            z-index: -1;
+        }
+
+        .social-icon:hover {
+            transform: translateY(-5px) scale(1.1);
+            color: black;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .social-icon:hover::before {
+            opacity: 1;
+        }
+
+        .theme-toggle {
+            background: var(--card-color);
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            color: var(--text-color);
+            font-size: 22px;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .theme-toggle:hover {
+            transform: rotate(15deg);
+            background: var(--gradient);
+            color: black;
+        }
+
+        .hero {
+            padding: 120px 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: var(--gradient-light);
+            z-index: -1;
+        }
+
+        .app-image-container {
+            position: relative;
+            width: 320px;
+            height: 320px;
+            margin: 0 auto 50px;
+            perspective: 1200px;
+            cursor: pointer;
+        }
+
+        .app-image {
+            width: 100%;
+            height: 100%;
+            background-image: url('https://www.thaqfny.com/wp-content/uploads/2021/07/%D8%B3%D9%86%D8%A7%D8%A8-%D8%B4%D8%A7%D8%AA.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-color: #121212;
+            border-radius: 50%;
+            box-shadow: 
+                0 20px 40px rgba(0, 0, 0, 0.4),
+                0 0 0 1px rgba(255, 255, 255, 0.1),
+                0 0 50px rgba(255, 252, 0, 0.5);
+            transform-style: preserve-3d;
+            animation: float 8s ease-in-out infinite;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.1s ease-out;
+        }
+
+        .app-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--gradient);
+            opacity: 0.2;
+            z-index: 1;
+            border-radius: 50%;
+        }
+
+        .app-image::after {
+            content: '';
+            position: absolute;
+            top: -10%;
+            left: -10%;
+            width: 120%;
+            height: 120%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transform: rotate(45deg);
+            animation: shimmer 5s infinite;
+            z-index: 2;
+            border-radius: 50%;
+        }
+
+        @keyframes float {
+            0%, 100% { 
+                transform: translateY(0) rotateX(5deg) rotateY(5deg) scale(1); 
+            }
+            25% { 
+                transform: translateY(-20px) rotateX(-5deg) rotateY(10deg) scale(1.02); 
+            }
+            50% { 
+                transform: translateY(-10px) rotateX(10deg) rotateY(-5deg) scale(1.01); 
+            }
+            75% { 
+                transform: translateY(-15px) rotateX(-10deg) rotateY(-10deg) scale(1.02); 
+            }
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) rotate(45deg); }
+        }
+
+        .hero h1 {
+            font-size: 52px;
+            margin-bottom: 20px;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 800;
+        }
+
+        .hero p {
+            font-size: 22px;
+            max-width: 700px;
+            margin: 0 auto 40px;
+            color: var(--text-color);
+            opacity: 0.9;
+        }
+
+        .details-btn {
+            display: inline-block;
+            background: var(--gradient);
+            color: black;
+            padding: 18px 35px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 20px;
+            transition: var(--transition);
+            box-shadow: 0 10px 30px rgba(255, 252, 0, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .details-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: 0.5s;
+        }
+
+        .details-btn:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 15px 40px rgba(255, 252, 0, 0.6);
+        }
+
+        .details-btn:hover::before {
+            left: 100%;
+        }
+
+        .features {
+            padding: 100px 0;
+            background-color: var(--card-color);
+            position: relative;
+        }
+
+        .features::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100" opacity="0.05"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="white" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 42px;
+            margin-bottom: 60px;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 800;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: var(--gradient);
+            border-radius: 2px;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 40px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .feature-card {
+            background-color: var(--background-color);
+            padding: 40px 30px;
+            border-radius: 25px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: var(--gradient);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-15px) scale(1.03);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .feature-icon {
+            font-size: 50px;
+            margin-bottom: 25px;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .feature-card h3 {
+            font-size: 26px;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .feature-card p {
+            font-size: 18px;
+            opacity: 0.9;
+            line-height: 1.7;
+        }
+
+        .about {
+            padding: 100px 0;
+            position: relative;
+        }
+
+        .about::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(255, 252, 0, 0.1) 0%, transparent 70%);
+            z-index: -1;
+        }
+
+        .about-content {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .about-content h2 {
+            font-size: 42px;
+            margin-bottom: 40px;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 800;
+            position: relative;
+        }
+
+        .about-content h2::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: var(--gradient);
+            border-radius: 2px;
+        }
+
+        .about-content p {
+            font-size: 20px;
+            margin-bottom: 25px;
+            opacity: 0.9;
+            line-height: 1.8;
+        }
+
+        .developer {
+            margin-top: 50px;
+            padding: 30px;
+            background-color: var(--card-color);
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .developer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: var(--gradient);
+        }
+
+        .developer h3 {
+            font-size: 28px;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .developer p {
+            font-size: 18px;
+            opacity: 0.9;
+        }
+
+        footer {
+            background-color: var(--card-color);
+            padding: 50px 0 30px;
+            text-align: center;
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .footer-link {
+            color: var(--text-color);
+            text-decoration: none;
+            transition: var(--transition);
+            font-size: 16px;
+            position: relative;
+        }
+
+        .footer-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--gradient);
+            transition: var(--transition);
+        }
+
+        .footer-link:hover {
+            color: var(--primary-color);
+        }
+
+        .footer-link:hover::after {
+            width: 100%;
+        }
+
+        .copyright {
+            font-size: 16px;
+            color: var(--text-color);
+            opacity: 0.7;
+            margin-top: 20px;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            background-color: var(--card-color);
+            border-radius: 20px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+            transform: scale(0.9);
+            animation: scaleUp 0.3s forwards;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        @keyframes scaleUp {
+            to { transform: scale(1); }
+        }
+
+        .modal-header {
+            padding: 20px;
+            background: var(--gradient);
+            color: black;
+            text-align: center;
+            position: relative;
+        }
+
+        .modal-header h2 {
+            font-size: 24px;
+            margin: 0;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 24px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .close-modal:hover {
+            transform: rotate(90deg);
+        }
+
+        .modal-body {
+            padding: 30px;
+        }
+
+        .app-info {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .info-label {
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .info-value {
+            font-weight: 500;
+        }
+
+        .modal-download-btn {
+            display: block;
+            width: 100%;
+            background: var(--gradient);
+            color: black;
+            padding: 15px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 18px;
+            transition: var(--transition);
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .modal-download-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(255, 252, 0, 0.4);
+        }
+
+        .telegram-channel {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 14px;
+            opacity: 0.8;
+        }
+
+        .telegram-channel a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        /* Instruction Modal Styles */
+        .instruction-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s;
+        }
+
+        .instruction-content {
+            background-color: var(--card-color);
+            border-radius: 20px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+            transform: scale(0.9);
+            animation: scaleUp 0.3s forwards;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .instruction-header {
+            padding: 20px;
+            background: var(--gradient);
+            color: black;
+            text-align: center;
+            position: relative;
+        }
+
+        .instruction-header h2 {
+            font-size: 24px;
+            margin: 0;
+        }
+
+        .close-instruction {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 24px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .close-instruction:hover {
+            transform: rotate(90deg);
+        }
+
+        .instruction-body {
+            padding: 30px;
+            text-align: right;
+            direction: rtl;
+        }
+
+        .instruction-body h3 {
+            font-size: 22px;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+            text-align: center;
+        }
+
+        .instruction-body ol {
+            margin-right: 20px;
+            margin-bottom: 25px;
+        }
+
+        .instruction-body li {
+            font-size: 18px;
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+
+        .instruction-btn {
+            display: block;
+            width: 100%;
+            background: var(--gradient);
+            color: black;
+            padding: 15px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 18px;
+            transition: var(--transition);
+            text-align: center;
+            border: none;
+            cursor: pointer;
+        }
+
+        .instruction-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(255, 252, 0, 0.4);
+        }
+
+        /* Initial Warning Modal */
+        .warning-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s;
+        }
+
+        .warning-content {
+            background-color: var(--card-color);
+            border-radius: 20px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+            transform: scale(0.9);
+            animation: scaleUp 0.3s forwards;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .warning-header {
+            padding: 20px;
+            background: linear-gradient(135deg, #ff3333, #ff6666);
+            color: white;
+            text-align: center;
+            position: relative;
+        }
+
+        .warning-header h2 {
+            font-size: 24px;
+            margin: 0;
+        }
+
+        .warning-body {
+            padding: 30px;
+            text-align: center;
+        }
+
+        .warning-body p {
+            font-size: 20px;
+            margin-bottom: 25px;
+            line-height: 1.6;
+            color: #ff6666;
+            font-weight: 600;
+        }
+
+        .warning-btn {
+            display: block;
+            width: 100%;
+            background: linear-gradient(135deg, #ff3333, #ff6666);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 18px;
+            transition: var(--transition);
+            text-align: center;
+            border: none;
+            cursor: pointer;
+        }
+
+        .warning-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(255, 51, 51, 0.4);
+        }
+
+        @media (max-width: 768px) {
+            .nav-container {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .hero h1 {
+                font-size: 38px;
+            }
+            
+            .hero p {
+                font-size: 18px;
+            }
+            
+            .app-image-container {
+                width: 280px;
+                height: 280px;
+            }
+            
+            .section-title {
+                font-size: 34px;
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-links {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .modal-content, .instruction-content, .warning-content {
+                width: 95%;
+            }
+            
+            .instruction-body {
+                padding: 20px;
+            }
+            
+            .instruction-body li {
+                font-size: 16px;
+            }
+        }
+
+        .app-image.loading {
+            background: var(--gradient-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .app-image.loading::after {
+            content: 'Loading...';
+            color: white;
+            font-size: 18px;
+            z-index: 3;
+        }
+
+        .details-btn:focus,
+        .social-icon:focus,
+        .theme-toggle:focus {
+            outline: 2px solid var(--primary-color);
+            outline-offset: 2px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="nav-container">
+                <a href="#" class="logo">
+                    <div class="logo-icon">iOS</div>
+                    <div class="logo-text">iOS Store</div>
+                </a>
+                <div class="social-icons">
+                    <a href="https://wa.me/201550425843" class="social-icon" target="_blank" aria-label="WhatsApp">
+                        <i class="fab fa-whatsapp"></i>
+                    </a>
+                    <a href="https://www.instagram.com/mhamedashrf.0" class="social-icon" target="_blank" aria-label="Instagram">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="https://t.me/h_moh_za" class="social-icon" target="_blank" aria-label="Telegram">
+                        <i class="fab fa-telegram"></i>
+                    </a>
+                </div>
+                <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark/light mode">
+                    <i class="fas fa-sun"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <div class="app-image-container" id="appImageContainer">
+                <div class="app-image" id="appImage"></div>
+            </div>
+            <h1>Snapchat Premium</h1>
+            <p>The premium Snapchat app with all features unlocked, including iPhone emoji, iPhone line, location changer, and many more premium features.</p>
+            <a href="#" class="details-btn" id="detailsBtn">App Details</a>
+        </div>
+    </section>
+
+    <section class="features">
+        <div class="container">
+            <h2 class="section-title">App Features</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-ghost"></i>
+                    </div>
+                    <h3>Premium Unlocked</h3>
+                    <p>All premium features unlocked - iPhone emoji, iPhone line, location changer, and more without subscription.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <h3>Location Changer</h3>
+                    <p>Change your location to anywhere in the world. Share snaps from different places without moving.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <h3>iPhone Features</h3>
+                    <p>Get iPhone emoji and iPhone line features on any device. Experience the full iOS Snapchat experience.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="about">
+        <div class="container">
+            <div class="about-content">
+                <h2>About iOS Store</h2>
+                <p>iOS Store is a leading platform for providing the best applications for iOS users. We focus on delivering a unique user experience with high-quality and secure applications.</p>
+                <p>We are constantly working to develop and improve our platform to meet the needs of our users.</p>
+                
+                <div class="developer">
+                    <h3>Developer: Mohamed Ashraf</h3>
+                    <p>Professional application developer with extensive experience in creating innovative solutions for iOS users.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-links">
+                <a href="#" class="footer-link">Privacy Policy</a>
+                <a href="#" class="footer-link">Terms of Use</a>
+                <a href="#" class="footer-link">Contact Us</a>
+            </div>
+            <p class="copyright">© 2025 iOS Store by iosmodx. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Modal for App Details -->
+    <div class="modal" id="appDetailsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Snapchat Premium Details</h2>
+                <span class="close-modal" id="closeModal">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="app-info">
+                    <div class="info-item">
+                        <span class="info-label">App Name:</span>
+                        <span class="info-value">Snapchat Premium</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Version:</span>
+                        <span class="info-value">12.5.0</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Size:</span>
+                        <span class="info-value">45 MB</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Bundle ID:</span>
+                        <span class="info-value">com.snapchat</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Compatibility:</span>
+                        <span class="info-value">iOS 13.0 or later</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Last Updated:</span>
+                        <span class="info-value">November 20, 2025</span>
+                    </div>
+                </div>
+                <p class="telegram-channel">Join our Telegram channel: <a href="https://t.me/iosmodx" target="_blank">@ios_store_updates</a></p>
+                <a href="https://www.mediafire.com/file/snapchat_premium_12.5.0.ipa/file" class="modal-download-btn" target="_blank">Download App</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Initial Warning Modal -->
+    <div class="warning-modal" id="warningModal">
+        <div class="warning-content">
+            <div class="warning-header">
+                <h2>Important Notice</h2>
+            </div>
+            <div class="warning-body">
+                <p>يجب عليك قراءة هذه التعليمات قبل تحميل التطبيق</p>
+                <button class="warning-btn" id="warningOkBtn">Ok</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Instruction Modal -->
+    <div class="instruction-modal" id="instructionModal">
+        <div class="instruction-content">
+            <div class="instruction-header">
+                <h2>التعليمات قبل التحميل</h2>
+                <span class="close-instruction" id="closeInstruction">&times;</span>
+            </div>
+            <div class="instruction-body">
+                <h3>يرجى اتباع هذه الخطوات بالترتيب:</h3>
+                <ol>
+                    <li>يجب أن يكون لديك حساب على سناب شات وتكون حافظ الباسورد بتاعه!</li>
+                    <li>امسح نسخة سناب شات الرسمية اللي عندك قبل تثبيت هذه النسخة</li>
+                    <li>هذه النسخة تحتوي على إيموجي الآيفون وخط الآيفون</li>
+                    <li>يمكنك تغيير الوكيشن (الموقع) بتاعك في أي مكان تحبه حول العالم</li>
+                    <li>احتفظ بنسخة احتياطية من محادثاتك المهمة قبل الحذف</li>
+                    <li>تأكد من أن لديك مساحة كافية على جهازك</li>
+                </ol>
+                <button class="instruction-btn" id="instructionOkBtn">Ok - فهمت التعليمات</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Dark/Light mode toggle
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = themeToggle.querySelector('i');
+        
+        // Start with dark mode (default)
+        document.body.classList.remove('light-mode');
+        themeIcon.classList.remove('fa-moon');
+        themeIcon.classList.add('fa-sun');
+        
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('light-mode');
+            
+            if (document.body.classList.contains('light-mode')) {
+                themeIcon.classList.remove('fa-sun');
+                themeIcon.classList.add('fa-moon');
+            } else {
+                themeIcon.classList.remove('fa-moon');
+                themeIcon.classList.add('fa-sun');
+            }
+            
+            // Save preference in localStorage
+            localStorage.setItem('theme', document.body.classList.contains('light-mode') ? 'light' : 'dark');
+        });
+
+        // Load saved preference
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'light') {
+            document.body.classList.add('light-mode');
+            themeIcon.classList.remove('fa-sun');
+            themeIcon.classList.add('fa-moon');
+        }
+
+        // Improve image quality
+        const appImage = document.getElementById('appImage');
+        
+        // Add loading state for image
+        appImage.classList.add('loading');
+        
+        const img = new Image();
+        img.onload = function() {
+            appImage.style.backgroundImage = `url('${img.src}')`;
+            appImage.classList.remove('loading');
+        };
+        img.onerror = function() {
+            appImage.style.backgroundImage = "url('https://www.thaqfny.com/wp-content/uploads/2021/07/%D8%B3%D9%86%D8%A7%D8%A8-%D8%B4%D8%A7%D8%AA.png')";
+            appImage.classList.remove('loading');
+        };
+        img.src = 'https://www.thaqfny.com/wp-content/uploads/2021/07/%D8%B3%D9%86%D8%A7%D8%A8-%D8%B4%D8%A7%D8%AA.png';
+
+        // Modals
+        const warningModal = document.getElementById('warningModal');
+        const instructionModal = document.getElementById('instructionModal');
+        const warningOkBtn = document.getElementById('warningOkBtn');
+        const instructionOkBtn = document.getElementById('instructionOkBtn');
+        const closeInstruction = document.getElementById('closeInstruction');
+        
+        // Show warning modal on page load
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                warningModal.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            }, 1000);
+        });
+
+        // Warning modal OK button
+        warningOkBtn.addEventListener('click', () => {
+            warningModal.style.display = 'none';
+            instructionModal.style.display = 'flex';
+        });
+
+        // Instruction modal OK button
+        instructionOkBtn.addEventListener('click', () => {
+            instructionModal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        });
+
+        // Close instruction modal
+        closeInstruction.addEventListener('click', () => {
+            instructionModal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        });
+
+        // Close modals when clicking outside
+        window.addEventListener('click', (e) => {
+            if (e.target === warningModal) {
+                warningModal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+            if (e.target === instructionModal) {
+                instructionModal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        });
+
+        // Image movement effects with mouse
+        document.addEventListener('mousemove', (e) => {
+            const mouseX = e.clientX / window.innerWidth;
+            const mouseY = e.clientY / window.innerHeight;
+            
+            const moveX = (mouseX - 0.5) * 30;
+            const moveY = (mouseY - 0.5) * 30;
+            
+            appImage.style.transform = `translateY(${moveY}px) translateX(${moveX}px) rotateX(${moveY * 0.5}deg) rotateY(${moveX * 0.5}deg)`;
+        });
+
+        // Smooth scrolling effects
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Modal functionality
+        const detailsBtn = document.getElementById('detailsBtn');
+        const modal = document.getElementById('appDetailsModal');
+        const closeModal = document.getElementById('closeModal');
+
+        // Open modal when Details button is clicked
+        detailsBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            modal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        });
+
+        // Close modal when X is clicked
+        closeModal.addEventListener('click', () => {
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        });
+
+        // Close modal when clicking outside
+        window.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        });
+    </script>
+</body>
+</html>
